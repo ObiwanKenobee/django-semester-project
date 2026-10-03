@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ org.name }} | Atlas Sanctum{% endblock %}
+
+{% block content %}
+<nav class="breadcrumb">
+    <a href="{% url 'observatory:organisation_list' %}">&larr; All Organisations</a>
+</nav>
+
+<section class="hero compact">
+    <p class="eyebrow">Phase 9 — Institutional Collaboration</p>
+    <h1>{{ org.name }}</h1>
+    {% if org.country %}<p class="location">{{ org.country }}</p>{% endif %}
+</section>
+
+<div class="panel-grid">
+    {% if org.description %}
+    <div class="panel panel--wide">
+        <h2>About</h2>
+        <p>{{ org.description }}</p>
+        {% if org.website %}<p><a href="{{ org.website }}" target="_blank" rel="noopener">{{ org.website }}</a></p>{% endif %}
+    </div>
+    {% endif %}
+
+    <div class="panel panel--wide">
+        <h2>Signals
+            <span class="count-badge">{{ org.signals.count }}</span>
+        </h2>
+        {% with signals=org.signals.all %}
+        {% if signals %}
+        <div class="signal-list" style="margin-top:.75rem;">
+            {% for signal in signals %}
+            <a href="{% url 'observatory:signal_detail' signal.pk %}" class="signal-row">
+                <div class="signal-meta">
+                    <span class="category">{{ signal.category }}</span>
+                    <span class="status status--{{ signal.status|lower }}">{{ signal.status }}</span>
+                </div>
+                <div class="signal-body">
+                    <h3>{{ signal.title }}</h3>
+                    {% if signal.location %}<p class="location">{{ signal.location }}</p>{% endif %}
+                </div>
+                <div class="signal-date">{{ signal.created_at|date:"d M Y" }}</div>
+            </a>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="muted">No signals attributed to this organisation yet.</p>
+        {% endif %}
+        {% endwith %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}Impact | Atlas Sanctum{% endblock %}
+
+{% block content %}
+<section class="hero compact">
+    <p class="eyebrow">Phase 8 — Impact Measurement</p>
+    <h1>Impact Records</h1>
+    <p>Measured outcomes from coordinated actions. <span class="badge">Demo Data</span></p>
+</section>
+
+{% if impacts %}
+<div class="signal-list">
+    {% for impact in impacts %}
+    <div class="signal-row signal-row--static">
+        <div class="signal-meta">
+            <span class="category">{{ impact.impact_type }}</span>
+        </div>
+        <div class="signal-body">
+            <h3>{{ impact.title }}</h3>
+            {% if impact.metric %}<p class="location">{{ impact.metric }}</p>{% endif %}
+            <p class="muted">
+                Action: <a href="{% url 'observatory:action_detail' impact.action.pk %}">{{ impact.action.title }}</a>
+                &mdash; Signal: <a href="{% url 'observatory:signal_detail' impact.action.opportunity.signal.pk %}">{{ impact.action.opportunity.signal.title }}</a>
+            </p>
+            {% if impact.description %}<p>{{ impact.description|truncatewords:20 }}</p>{% endif %}
+        </div>
+        <div class="signal-date">{{ impact.recorded_at|date:"d M Y" }}</div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="panel">
+    <p>No impact records yet. <a href="/admin/">Add impact records via the admin.</a></p>
+</div>
+{% endif %}
+{% endblock %}

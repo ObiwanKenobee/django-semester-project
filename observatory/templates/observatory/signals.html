@@ -13,6 +13,25 @@
     </p>
 </section>
 
+<form class="filter-bar" method="get">
+    <select name="category">
+        <option value="">All categories</option>
+        {% for value, label in categories %}
+        <option value="{{ value }}" {% if selected_category == value %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+    </select>
+    <select name="status">
+        <option value="">All statuses</option>
+        {% for value, label in statuses %}
+        <option value="{{ value }}" {% if selected_status == value %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+    </select>
+    <button type="submit">Filter</button>
+    {% if selected_category or selected_status %}
+    <a href="{% url 'observatory:signals' %}" class="btn-link">Clear</a>
+    {% endif %}
+</form>
+
 {% if signals %}
 <div class="signal-list">
     {% for signal in signals %}
@@ -32,7 +51,7 @@
 </div>
 {% else %}
 <div class="panel">
-    <p>No signals recorded yet. <a href="/admin/">Add signals via the admin</a> or run the demo data command.</p>
+    <p>No signals match the current filter. <a href="{% url 'observatory:signals' %}">Clear filters</a> or <a href="/admin/">add signals via the admin</a>.</p>
 </div>
 {% endif %}
 {% endblock %}

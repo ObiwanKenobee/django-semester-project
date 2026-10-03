@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}Assessment — {{ signal.title }} | Atlas Sanctum{% endblock %}
+
+{% block content %}
+<nav class="breadcrumb">
+    <a href="{% url 'observatory:signal_detail' signal.pk %}">&larr; {{ signal.title }}</a>
+</nav>
+
+<section class="hero compact">
+    <p class="eyebrow">Phase 5 — Decision Support</p>
+    <div class="signal-header-meta">
+        <span class="category">{{ signal.category }}</span>
+        <span class="status status--{{ assessment.priority|lower }}">{{ assessment.priority }} priority</span>
+        <span class="badge">Demo Data</span>
+    </div>
+    <h1>Assessment</h1>
+    <p>{{ signal.title }}</p>
+</section>
+
+<div class="panel-grid">
+    <div class="panel panel--wide">
+        <h2>Summary</h2>
+        <p>{{ assessment.summary }}</p>
+    </div>
+
+    {% if assessment.recommendation %}
+    <div class="panel panel--wide">
+        <h2>Recommendation</h2>
+        <p>{{ assessment.recommendation }}</p>
+    </div>
+    {% endif %}
+
+    <div class="panel">
+        <h2>Assessment details</h2>
+        <dl class="detail-list">
+            <dt>Priority</dt><dd>{{ assessment.priority }}</dd>
+            {% if assessment.assessed_by %}<dt>Assessed by</dt><dd>{{ assessment.assessed_by }}</dd>{% endif %}
+            <dt>Created</dt><dd>{{ assessment.created_at|date:"d M Y, H:i" }}</dd>
+            <dt>Updated</dt><dd>{{ assessment.updated_at|date:"d M Y, H:i" }}</dd>
+        </dl>
+    </div>
+
+    <div class="panel">
+        <h2>Intelligence chain</h2>
+        <ul class="chain-list">
+            <li><a href="{% url 'observatory:signal_detail' signal.pk %}">Signal &rarr;</a></li>
+            <li><a href="{% url 'observatory:evidence_list' signal.pk %}">Evidence &rarr;</a></li>
+            <li><a href="{% url 'observatory:opportunity_list' %}">Opportunities &rarr;</a></li>
+        </ul>
+    </div>
+</div>
+{% endblock %}

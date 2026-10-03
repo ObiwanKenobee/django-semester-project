@@ -127,3 +127,110 @@ h3 { font-size: 1.25rem; margin: .8rem 0 .5rem; }
     .signal-row { grid-template-columns: 1fr; gap: .5rem; }
     .signal-date { display: none; }
 }
+
+/* Filter bar */
+.filter-bar {
+    display: flex;
+    gap: .75rem;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+.filter-bar select, .filter-bar button {
+    padding: .45rem .75rem;
+    border: 1px solid #d8d7cb;
+    border-radius: 8px;
+    background: #faf9f4;
+    font-size: .9rem;
+    font-family: inherit;
+    cursor: pointer;
+}
+.filter-bar button { background: #18261d; color: #f3f0e4; font-weight: 700; border-color: #18261d; }
+.filter-bar button:hover { background: #243d2a; }
+
+/* Map */
+#signal-map {
+    width: 100%;
+    height: 520px;
+    border-radius: 18px;
+    border: 1px solid #d8d7cb;
+    overflow: hidden;
+}
+
+/* Intelligence chain list */
+.chain-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: .5rem; }
+.chain-list li { display: flex; align-items: center; gap: .5rem; font-size: .95rem; }
+.chain-list a { font-weight: 600; }
+.chain-list a:hover { text-decoration: underline; }
+
+/* Count badge */
+.count-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.4rem;
+    height: 1.4rem;
+    padding: 0 .4rem;
+    background: #18261d;
+    color: #f3f0e4;
+    border-radius: 999px;
+    font-size: .7rem;
+    font-weight: 800;
+    vertical-align: middle;
+    margin-left: .4rem;
+}
+
+/* Muted text */
+.muted { opacity: .55; font-size: .85rem; }
+
+/* Static signal row (no hover, not a link) */
+.signal-row--static {
+    display: grid;
+    grid-template-columns: 180px 1fr auto;
+    align-items: start;
+    gap: 1.5rem;
+    padding: 1.25rem 1.5rem;
+    background: #faf9f4;
+    border: 1px solid #d8d7cb;
+    border-radius: 14px;
+}
+
+/* Small status pill */
+.status-sm { font-size: .7rem; padding: .2rem .45rem; }
+
+/* Reliability status colours */
+.status--unverified  { background: #ece8d9; }
+.status--plausible   { background: #dde8f0; }
+.status--confirmed   { background: #d8ead9; }
+
+/* Opportunity status colours */
+.status--identified { background: #ece8d9; }
+.status--scoping    { background: #dde8f0; }
+.status--ready      { background: #d8e8d0; }
+.status--active     { background: #d8e8d0; color: #1a4020; }
+.status--closed     { background: #e8e8e8; }
+
+/* Action status colours */
+.status--proposed    { background: #ece8d9; }
+.status--assigned    { background: #dde8f0; }
+.status--in.progress { background: #d8e8d0; }
+.status--complete    { background: #d8ead9; color: #1a4020; }
+.status--cancelled   { background: #e8e8e8; }
+
+/* Impact type colours */
+.status--environmental  { background: #d8ead9; }
+.status--social         { background: #dde8f0; }
+.status--economic       { background: #ece8d9; }
+.status--institutional  { background: #eef0e8; }
+
+/* Priority colours */
+.status--low      { background: #eef0e8; }
+.status--medium   { background: #ece8d9; }
+.status--high     { background: #dde8f0; }
+.status--critical { background: #f0d8d8; color: #3a1010; }
+
+@media (max-width: 800px) {
+    .signal-row--static { grid-template-columns: 1fr; gap: .5rem; }
+    #signal-map { height: 340px; }
+    .filter-bar { flex-direction: column; align-items: stretch; }
+}

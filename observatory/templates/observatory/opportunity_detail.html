@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ opportunity.title }} | Atlas Sanctum{% endblock %}
+
+{% block content %}
+<nav class="breadcrumb">
+    <a href="{% url 'observatory:opportunity_list' %}">&larr; All Opportunities</a>
+</nav>
+
+<section class="hero compact">
+    <div class="signal-header-meta">
+        <span class="category">{{ opportunity.signal.category }}</span>
+        <span class="status status--{{ opportunity.status|lower }}">{{ opportunity.status }}</span>
+        <span class="badge">Demo Data</span>
+    </div>
+    <h1>{{ opportunity.title }}</h1>
+    {% if opportunity.location %}<p class="location">{{ opportunity.location }}</p>{% endif %}
+</section>
+
+<div class="panel-grid">
+    {% if opportunity.description %}
+    <div class="panel panel--wide">
+        <h2>Description</h2>
+        <p>{{ opportunity.description }}</p>
+    </div>
+    {% endif %}
+
+    <div class="panel">
+        <h2>Details</h2>
+        <dl class="detail-list">
+            <dt>Status</dt><dd>{{ opportunity.status }}</dd>
+            {% if opportunity.location %}<dt>Location</dt><dd>{{ opportunity.location }}</dd>{% endif %}
+            <dt>Signal</dt><dd><a href="{% url 'observatory:signal_detail' opportunity.signal.pk %}">{{ opportunity.signal.title }}</a></dd>
+            <dt>Identified</dt><dd>{{ opportunity.created_at|date:"d M Y" }}</dd>
+        </dl>
+    </div>
+
+    <div class="panel">
+        <h2>Actions
+            {% with count=opportunity.actions.count %}
+            {% if count %}<span class="count-badge">{{ count }}</span>{% endif %}
+            {% endwith %}
+        </h2>
+        {% with actions=opportunity.actions.all %}
+        {% if actions %}
+        <ul class="chain-list">
+            {% for action in actions %}
+            <li>
+                <a href="{% url 'observatory:action_detail' action.pk %}">{{ action.title }}</a>
+                <span class="status status--{{ action.status|lower }} status-sm">{{ action.status }}</span>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p class="muted">No actions assigned yet.</p>
+        {% endif %}
+        {% endwith %}
+    </div>
+</div>
+{% endblock %}

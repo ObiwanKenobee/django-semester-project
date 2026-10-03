@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}Organisations | Atlas Sanctum{% endblock %}
+
+{% block content %}
+<section class="hero compact">
+    <p class="eyebrow">Phase 9 — Institutional Collaboration</p>
+    <h1>Organisations</h1>
+    <p>Institutions contributing signals and evidence to the Observatory. <span class="badge">Demo Data</span></p>
+</section>
+
+{% if organisations %}
+<div class="grid">
+    {% for org in organisations %}
+    <article class="card">
+        <h3><a href="{% url 'observatory:organisation_detail' org.pk %}">{{ org.name }}</a></h3>
+        {% if org.country %}<p class="location">{{ org.country }}</p>{% endif %}
+        {% if org.description %}<p>{{ org.description|truncatewords:20 }}</p>{% endif %}
+        <p class="muted">{{ org.signals.count }} signal{{ org.signals.count|pluralize }}</p>
+    </article>
+    {% endfor %}
+</div>
+{% else %}
+<div class="panel">
+    <p>No organisations recorded yet. <a href="/admin/">Add organisations via the admin.</a></p>
+</div>
+{% endif %}
+{% endblock %}

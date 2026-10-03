@@ -28,23 +28,46 @@
     <div class="panel">
         <h2>Signal details</h2>
         <dl class="detail-list">
-            <dt>Category</dt>
-            <dd>{{ signal.category }}</dd>
-            <dt>Status</dt>
-            <dd>{{ signal.status }}</dd>
-            {% if signal.location %}
-            <dt>Location</dt>
-            <dd>{{ signal.location }}</dd>
-            {% endif %}
-            {% if signal.source %}
-            <dt>Source</dt>
-            <dd>{{ signal.source }}</dd>
-            {% endif %}
-            <dt>Observed</dt>
-            <dd>{{ signal.created_at|date:"d M Y, H:i" }}</dd>
-            <dt>Last updated</dt>
-            <dd>{{ signal.updated_at|date:"d M Y, H:i" }}</dd>
+            <dt>Category</dt><dd>{{ signal.category }}</dd>
+            <dt>Status</dt><dd>{{ signal.status }}</dd>
+            {% if signal.location %}<dt>Location</dt><dd>{{ signal.location }}</dd>{% endif %}
+            {% if signal.source %}<dt>Source</dt><dd>{{ signal.source }}</dd>{% endif %}
+            {% if signal.organisation %}<dt>Organisation</dt><dd><a href="{% url 'observatory:organisation_detail' signal.organisation.pk %}">{{ signal.organisation }}</a></dd>{% endif %}
+            <dt>Observed</dt><dd>{{ signal.created_at|date:"d M Y, H:i" }}</dd>
+            <dt>Last updated</dt><dd>{{ signal.updated_at|date:"d M Y, H:i" }}</dd>
         </dl>
+    </div>
+
+    <div class="panel">
+        <h2>Intelligence chain</h2>
+        <ul class="chain-list">
+            <li>
+                <a href="{% url 'observatory:evidence_list' signal.pk %}">
+                    Evidence
+                    {% with count=signal.evidence.count %}
+                    {% if count %}<span class="count-badge">{{ count }}</span>{% endif %}
+                    {% endwith %}
+                </a>
+            </li>
+            <li>
+                {% if signal.assessment %}
+                <a href="{% url 'observatory:assessment_detail' signal.pk %}">Assessment &rarr;</a>
+                {% else %}
+                <span class="muted">No assessment yet</span>
+                {% endif %}
+            </li>
+            <li>
+                <a href="{% url 'observatory:opportunity_list' %}?signal={{ signal.pk }}">
+                    Opportunities
+                    {% with count=signal.opportunities.count %}
+                    {% if count %}<span class="count-badge">{{ count }}</span>{% endif %}
+                    {% endwith %}
+                </a>
+            </li>
+            {% if signal.has_coordinates %}
+            <li><a href="{% url 'observatory:signal_map' %}">View on map &rarr;</a></li>
+            {% endif %}
+        </ul>
     </div>
 </div>
 {% endblock %}

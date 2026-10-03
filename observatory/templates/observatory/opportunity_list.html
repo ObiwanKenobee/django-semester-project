@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}Opportunities | Atlas Sanctum{% endblock %}
+
+{% block content %}
+<section class="hero compact">
+    <p class="eyebrow">Phase 4 — Opportunity Mapping</p>
+    <h1>Opportunities</h1>
+    <p>Actionable opportunities identified from intelligence signals. <span class="badge">Demo Data</span></p>
+</section>
+
+{% if opportunities %}
+<div class="signal-list">
+    {% for opp in opportunities %}
+    <a href="{% url 'observatory:opportunity_detail' opp.pk %}" class="signal-row">
+        <div class="signal-meta">
+            <span class="category">{{ opp.signal.category }}</span>
+            <span class="status status--{{ opp.status|lower }}">{{ opp.status }}</span>
+        </div>
+        <div class="signal-body">
+            <h3>{{ opp.title }}</h3>
+            {% if opp.location %}<p class="location">{{ opp.location }}</p>{% endif %}
+            <p class="muted">Signal: <a href="{% url 'observatory:signal_detail' opp.signal.pk %}">{{ opp.signal.title }}</a></p>
+            {% if opp.description %}<p>{{ opp.description|truncatewords:20 }}</p>{% endif %}
+        </div>
+        <div class="signal-date">{{ opp.created_at|date:"d M Y" }}</div>
+    </a>
+    {% endfor %}
+</div>
+{% else %}
+<div class="panel">
+    <p>No opportunities recorded yet. <a href="/admin/">Add opportunities via the admin.</a></p>
+</div>
+{% endif %}
+{% endblock %}

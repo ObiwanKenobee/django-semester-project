@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block title %}Signal Map | Atlas Sanctum{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+{% endblock %}
+
+{% block content %}
+<section class="hero compact">
+    <p class="eyebrow">Phase 3 — Geospatial Intelligence</p>
+    <h1>Signal Map</h1>
+    <p>Intelligence signals with recorded coordinates. <span class="badge">Demo Data</span></p>
+</section>
+
+<div id="signal-map"></div>
+
+{% if not signals %}
+<div class="panel" style="margin-top:1rem;">
+    <p>No signals with coordinates yet. Add latitude and longitude to signals via the <a href="/admin/">admin</a>.</p>
+</div>
+{% endif %}
+
+<script>
+const map = L.map('signal-map').setView([-1.286389, 36.817223], 6);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(map);
+
+const signals = [
+    {% for s in signals %}
+    {
+        lat: {{ s.latitude }},
+        lng: {{ s.longitude }},
+        title: "{{ s.title|escapejs }}",
+        category: "{{ s.category|escapejs }}",
+        status: "{{ s.status|escapejs }}",
+        url: "{% url 'observatory:signal_detail' s.pk %}"
+    }{% if not forloop.last %},{% endif %}
+    {% endfor %}
+];
+
+signals.forEach(function(s) {
+    L.marker([s.lat, s.lng])
+        .addTo(map)
+        .bindPopup(
+            '<strong>' + s.title + '</strong><br>' +
+            s.category + ' &mdash; ' + s.status + '<br>' +
+            '<a href="' + s.url + '">View signal &rarr;</a>'
+        );
+});
+</script>
+{% endblock %}

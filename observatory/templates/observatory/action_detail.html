@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ action.title }} | Atlas Sanctum{% endblock %}
+
+{% block content %}
+<nav class="breadcrumb">
+    <a href="{% url 'observatory:action_list' %}">&larr; All Actions</a>
+</nav>
+
+<section class="hero compact">
+    <p class="eyebrow">Phase 7 — Coordination</p>
+    <div class="signal-header-meta">
+        <span class="status status--{{ action.status|lower }}">{{ action.status }}</span>
+        <span class="badge">Demo Data</span>
+    </div>
+    <h1>{{ action.title }}</h1>
+    {% if action.assigned_to %}<p class="location">Assigned to: {{ action.assigned_to }}</p>{% endif %}
+</section>
+
+<div class="panel-grid">
+    {% if action.description %}
+    <div class="panel panel--wide">
+        <h2>Description</h2>
+        <p>{{ action.description }}</p>
+    </div>
+    {% endif %}
+
+    <div class="panel">
+        <h2>Action details</h2>
+        <dl class="detail-list">
+            <dt>Status</dt><dd>{{ action.status }}</dd>
+            {% if action.assigned_to %}<dt>Assigned to</dt><dd>{{ action.assigned_to }}</dd>{% endif %}
+            {% if action.due_date %}<dt>Due date</dt><dd>{{ action.due_date|date:"d M Y" }}</dd>{% endif %}
+            <dt>Opportunity</dt><dd><a href="{% url 'observatory:opportunity_detail' action.opportunity.pk %}">{{ action.opportunity.title }}</a></dd>
+            <dt>Created</dt><dd>{{ action.created_at|date:"d M Y" }}</dd>
+        </dl>
+    </div>
+
+    <div class="panel">
+        <h2>Impact records
+            {% with count=action.impacts.count %}
+            {% if count %}<span class="count-badge">{{ count }}</span>{% endif %}
+            {% endwith %}
+        </h2>
+        {% with impacts=action.impacts.all %}
+        {% if impacts %}
+        <ul class="chain-list">
+            {% for impact in impacts %}
+            <li>
+                <strong>{{ impact.title }}</strong>
+                <span class="status status--{{ impact.impact_type|lower }} status-sm">{{ impact.impact_type }}</span>
+                {% if impact.metric %}<br><span class="muted">{{ impact.metric }}</span>{% endif %}
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p class="muted">No impact records yet.</p>
+        {% endif %}
+        {% endwith %}
+    </div>
+</div>
+{% endblock %}

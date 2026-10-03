@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}Evidence — {{ signal.title }} | Atlas Sanctum{% endblock %}
+
+{% block content %}
+<nav class="breadcrumb">
+    <a href="{% url 'observatory:signal_detail' signal.pk %}">&larr; {{ signal.title }}</a>
+</nav>
+
+<section class="hero compact">
+    <p class="eyebrow">Phase 2 — Evidence Management</p>
+    <h1>Evidence</h1>
+    <p>Supporting evidence collected for this signal. <span class="badge">Demo Data</span></p>
+</section>
+
+{% if evidence %}
+<div class="signal-list">
+    {% for item in evidence %}
+    <a href="{% url 'observatory:evidence_detail' signal.pk item.pk %}" class="signal-row">
+        <div class="signal-meta">
+            <span class="category">{{ item.evidence_type }}</span>
+            <span class="status status--{{ item.reliability|lower }}">{{ item.reliability }}</span>
+        </div>
+        <div class="signal-body">
+            <h3>{{ item.title }}</h3>
+            {% if item.description %}<p>{{ item.description|truncatewords:20 }}</p>{% endif %}
+        </div>
+        <div class="signal-date">{{ item.collected_at|date:"d M Y" }}</div>
+    </a>
+    {% endfor %}
+</div>
+{% else %}
+<div class="panel">
+    <p>No evidence recorded for this signal yet. <a href="/admin/">Add evidence via the admin.</a></p>
+</div>
+{% endif %}
+{% endblock %}

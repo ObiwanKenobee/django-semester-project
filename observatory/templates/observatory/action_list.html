@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block title %}Actions | Atlas Sanctum{% endblock %}
+
+{% block content %}
+<section class="hero compact">
+    <p class="eyebrow">Phase 7 — Coordination</p>
+    <h1>Action Items</h1>
+    <p>Concrete actions assigned to coordinate responses to identified opportunities. <span class="badge">Demo Data</span></p>
+</section>
+
+{% if actions %}
+<div class="signal-list">
+    {% for action in actions %}
+    <a href="{% url 'observatory:action_detail' action.pk %}" class="signal-row">
+        <div class="signal-meta">
+            <span class="status status--{{ action.status|lower }}">{{ action.status }}</span>
+            {% if action.due_date %}<span class="signal-date">Due {{ action.due_date|date:"d M Y" }}</span>{% endif %}
+        </div>
+        <div class="signal-body">
+            <h3>{{ action.title }}</h3>
+            {% if action.assigned_to %}<p class="location">Assigned to: {{ action.assigned_to }}</p>{% endif %}
+            <p class="muted">Opportunity: {{ action.opportunity.title }}</p>
+        </div>
+        <div class="signal-date">{{ action.created_at|date:"d M Y" }}</div>
+    </a>
+    {% endfor %}
+</div>
+{% else %}
+<div class="panel">
+    <p>No action items recorded yet. <a href="/admin/">Add actions via the admin.</a></p>
+</div>
+{% endif %}
+{% endblock %}

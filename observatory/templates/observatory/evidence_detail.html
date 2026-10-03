@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ item.title }} | Atlas Sanctum{% endblock %}
+
+{% block content %}
+<nav class="breadcrumb">
+    <a href="{% url 'observatory:evidence_list' signal.pk %}">&larr; Evidence for {{ signal.title }}</a>
+</nav>
+
+<section class="hero compact">
+    <div class="signal-header-meta">
+        <span class="category">{{ item.evidence_type }}</span>
+        <span class="status status--{{ item.reliability|lower }}">{{ item.reliability }}</span>
+        <span class="badge">Demo Data</span>
+    </div>
+    <h1>{{ item.title }}</h1>
+</section>
+
+<div class="panel-grid">
+    {% if item.description %}
+    <div class="panel panel--wide">
+        <h2>Description</h2>
+        <p>{{ item.description }}</p>
+    </div>
+    {% endif %}
+
+    <div class="panel">
+        <h2>Evidence details</h2>
+        <dl class="detail-list">
+            <dt>Type</dt><dd>{{ item.evidence_type }}</dd>
+            <dt>Reliability</dt><dd>{{ item.reliability }}</dd>
+            {% if item.source_url %}
+            <dt>Source</dt><dd><a href="{{ item.source_url }}" target="_blank" rel="noopener">{{ item.source_url }}</a></dd>
+            {% endif %}
+            <dt>Collected</dt><dd>{{ item.collected_at|date:"d M Y, H:i" }}</dd>
+            <dt>Signal</dt><dd><a href="{% url 'observatory:signal_detail' signal.pk %}">{{ signal.title }}</a></dd>
+        </dl>
+    </div>
+</div>
+{% endblock %}
