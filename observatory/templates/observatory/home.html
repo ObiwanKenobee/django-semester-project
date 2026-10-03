@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}Observatory | Atlas Sanctum{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <p class="eyebrow">Living Intelligence Infrastructure</p>
+    <h1>Atlas Sanctum Observatory</h1>
+    <p>
+        A Django foundation for collecting signals, understanding systems, and coordinating
+        practical action across water, infrastructure, ecology, food, and community resilience.
+    </p>
+</section>
+
+<section class="principles">
+    {% for principle in principles %}
+    <div class="principle"><span>{{ forloop.counter }}</span>{{ principle }}</div>
+    {% endfor %}
+</section>
+
+<section>
+    <div class="section-heading">
+        <div>
+            <p class="eyebrow">Signals</p>
+            <h2>What the Observatory is noticing</h2>
+        </div>
+        <span class="badge">Prototype</span>
+    </div>
+
+    <div class="grid">
+        {% for signal in signals %}
+        <article class="card">
+            <div class="card-top">
+                <span class="category">{{ signal.category }}</span>
+                <span class="status">{{ signal.status }}</span>
+            </div>
+            <h3>{{ signal.title }}</h3>
+            <p>{{ signal.description }}</p>
+        </article>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}
