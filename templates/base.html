@@ -9,14 +9,19 @@
 </head>
 <body>
     <header class="site-header">
-        <a class="brand" href="/">ATLAS SANCTUM</a>
+        <a class="brand" href="{% url 'observatory:home' %}">ATLAS SANCTUM</a>
         <nav>
-            <a href="/">Observatory</a>
-            <a href="/about/">About</a>
+            <a href="{% url 'observatory:home' %}">Observatory</a>
+            <a href="{% url 'observatory:signals' %}">Signals</a>
+            <a href="{% url 'observatory:about' %}">About</a>
+            <a href="/admin/">Admin</a>
         </nav>
     </header>
     <main class="container">
         {% block content %}{% endblock %}
     </main>
+    <footer class="site-footer">
+        <p>Atlas Sanctum Observatory &mdash; Semester Prototype &mdash; <em>Observe → Understand → Decide → Coordinate → Learn</em></p>
+    </footer>
 </body>
 </html>

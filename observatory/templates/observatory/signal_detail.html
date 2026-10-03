@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ signal.title }} | Atlas Sanctum{% endblock %}
+
+{% block content %}
+<nav class="breadcrumb">
+    <a href="{% url 'observatory:signals' %}">&larr; All Signals</a>
+</nav>
+
+<section class="hero compact">
+    <div class="signal-header-meta">
+        <span class="category">{{ signal.category }}</span>
+        <span class="status status--{{ signal.status|lower }}">{{ signal.status }}</span>
+        <span class="badge">Demo Data</span>
+    </div>
+    <h1>{{ signal.title }}</h1>
+    {% if signal.location %}<p class="location">{{ signal.location }}</p>{% endif %}
+</section>
+
+<div class="panel-grid">
+    {% if signal.description %}
+    <div class="panel panel--wide">
+        <h2>Description</h2>
+        <p>{{ signal.description }}</p>
+    </div>
+    {% endif %}
+
+    <div class="panel">
+        <h2>Signal details</h2>
+        <dl class="detail-list">
+            <dt>Category</dt>
+            <dd>{{ signal.category }}</dd>
+            <dt>Status</dt>
+            <dd>{{ signal.status }}</dd>
+            {% if signal.location %}
+            <dt>Location</dt>
+            <dd>{{ signal.location }}</dd>
+            {% endif %}
+            {% if signal.source %}
+            <dt>Source</dt>
+            <dd>{{ signal.source }}</dd>
+            {% endif %}
+            <dt>Observed</dt>
+            <dd>{{ signal.created_at|date:"d M Y, H:i" }}</dd>
+            <dt>Last updated</dt>
+            <dd>{{ signal.updated_at|date:"d M Y, H:i" }}</dd>
+        </dl>
+    </div>
+</div>
+{% endblock %}

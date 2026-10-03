@@ -21,23 +21,34 @@
 <section>
     <div class="section-heading">
         <div>
-            <p class="eyebrow">Signals</p>
+            <p class="eyebrow">Recent Signals</p>
             <h2>What the Observatory is noticing</h2>
         </div>
-        <span class="badge">Prototype</span>
+        <div class="heading-actions">
+            <span class="badge">Demo Data</span>
+            <a href="{% url 'observatory:signals' %}" class="btn-link">View all signals &rarr;</a>
+        </div>
     </div>
 
+    {% if signals %}
     <div class="grid">
         {% for signal in signals %}
         <article class="card">
             <div class="card-top">
                 <span class="category">{{ signal.category }}</span>
-                <span class="status">{{ signal.status }}</span>
+                <span class="status status--{{ signal.status|lower }}">{{ signal.status }}</span>
             </div>
             <h3>{{ signal.title }}</h3>
-            <p>{{ signal.description }}</p>
+            {% if signal.location %}<p class="location">{{ signal.location }}</p>{% endif %}
+            <p>{{ signal.description|truncatewords:20 }}</p>
+            <a href="{% url 'observatory:signal_detail' signal.pk %}" class="card-link">View signal &rarr;</a>
         </article>
         {% endfor %}
     </div>
+    {% else %}
+    <div class="panel">
+        <p>No signals recorded yet. <a href="/admin/">Add signals via the admin</a> or run the demo data command.</p>
+    </div>
+    {% endif %}
 </section>
 {% endblock %}

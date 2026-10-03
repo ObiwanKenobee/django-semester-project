@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}Signals | Atlas Sanctum{% endblock %}
+
+{% block content %}
+<section class="hero compact">
+    <p class="eyebrow">Intelligence Signals</p>
+    <h1>What the Observatory is tracking</h1>
+    <p>
+        Signals represent conditions, events, or patterns that may deserve attention,
+        investigation, or coordinated action.
+        <span class="badge">Demo Data</span>
+    </p>
+</section>
+
+{% if signals %}
+<div class="signal-list">
+    {% for signal in signals %}
+    <a href="{% url 'observatory:signal_detail' signal.pk %}" class="signal-row">
+        <div class="signal-meta">
+            <span class="category">{{ signal.category }}</span>
+            <span class="status status--{{ signal.status|lower }}">{{ signal.status }}</span>
+        </div>
+        <div class="signal-body">
+            <h3>{{ signal.title }}</h3>
+            {% if signal.location %}<p class="location">{{ signal.location }}</p>{% endif %}
+            {% if signal.description %}<p>{{ signal.description|truncatewords:25 }}</p>{% endif %}
+        </div>
+        <div class="signal-date">{{ signal.created_at|date:"d M Y" }}</div>
+    </a>
+    {% endfor %}
+</div>
+{% else %}
+<div class="panel">
+    <p>No signals recorded yet. <a href="/admin/">Add signals via the admin</a> or run the demo data command.</p>
+</div>
+{% endif %}
+{% endblock %}
